@@ -10,6 +10,7 @@ package tree.rest;
 
 import tree.persistence.entity.Item;
 
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigInteger;
 

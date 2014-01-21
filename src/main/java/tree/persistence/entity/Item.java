@@ -8,6 +8,9 @@
 */
 package tree.persistence.entity;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.List;
@@ -18,6 +21,10 @@ import java.util.List;
  * <p>Author: predtechenskaya (predtechenskaya@i-teco.ru)</p>
  * <p>Date: 21.01.14</p>
  */
+@NamedQueries({
+    @NamedQuery(name="Item.root", query = "SELECT i FROM item i WHERE i.parent=0"),
+    @NamedQuery(name="Item.search", query = "SELECT i FROM item i WHERE i.text LIKE :searchtext")
+})
 
 @Entity(name="item")
 public class Item {
@@ -32,9 +39,11 @@ public class Item {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="parent_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     protected Item parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     protected List<Item> children;
 
     @Column(name="has_children")
