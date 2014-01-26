@@ -29,7 +29,6 @@ public class ItemService {
     @GET
     @Path(value = "/children")
     public List<JaxbItem> getChildren(@QueryParam("root") String strRoot){
-        //todo переделать обработку параметра, кривенько получилось !
         List<JaxbItem> result = new LinkedList<JaxbItem>();
         Item parent;
         BigInteger id = null;
@@ -79,6 +78,12 @@ public class ItemService {
             Item item;
             if((item = getById(id)) == null)
                throw new Exception("Передан некорректный ID узла");
+            if(item.isHasChildren())
+                throw new Exception("Невозможно удалить узел, у которого есть дочерние элементы");
+            //Пересчитаем, остались ли дочерние элементы
+            if(item.getParent().getChildren().size() == 1)
+                item.getParent().setHasChildren(false);
+
             EntityManagerUtil.getEm().remove(item);
             return new OperationResponse(true, "");
         }

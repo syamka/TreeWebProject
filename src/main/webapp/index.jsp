@@ -34,11 +34,12 @@
             function initSearchListener(){
                 $(document).ajaxComplete(function(event, xhr, settings){
                     if(settings.url.indexOf("rest/item/children") == 0){
-                        doOpenBranches();
-                        if(settings.url.indexOf("root=source") != -1){
-                            alert(searchAfterInit);
-                            if(searchAfterInit != "")
-                                search(searchAfterInit);
+                        if((settings.url.indexOf("root=source") != -1) && (searchAfterInit != "")){
+                            search(searchAfterInit);
+                            searchAfterInit = "";
+                        }
+                        else {
+                            doOpenBranches();
                         }
 
                     };
@@ -57,24 +58,24 @@
                     for(var i=0; i<ids.length; i++){
                         var li = $("#tree li[id="+ids[i]+"]");
                         if(li.length > 0 && li.is(":visible")){
+                            openBranches.splice(openBranches.indexOf(ids[i]),1);
                             if(li.hasClass("expandable")){
                                 li.find(".hitarea").click();
                             }
-                            openBranches.splice(openBranches.indexOf(ids[i]),1);
                         }
                     }
                 }
 
                 //Это все происходит в поиске, поэтому здесь же раскрашиваем результаты
-                var ids = $.merge([], searchResults);
-                for(var i=0;i<ids.length;i++){
-                    var li = $("#tree li[id="+ids[i]+"]");
-                    if(li.length > 0 && li.is(":visible")){
-                        li.addClass("green");
-                        searchResults.splice(searchResults.indexOf(ids[i]),1);
-                    }
+                    var ids = $.merge([], searchResults);
+                    for(var i=0;i<ids.length;i++){
+                        var li = $("#tree li[id="+ids[i]+"]");
+                        if(li.length > 0 && li.is(":visible")){
+                            li.addClass("green");
+                            searchResults.splice(searchResults.indexOf(ids[i]),1);
+                        }
 
-                }
+                    }
             }
 
             function search(text){
@@ -137,8 +138,11 @@
                         function(response){
                             if(response.status){
                                 alert("Дочерний узел успешно создан");
-                                $("#tree").empty();
+
                                 searchAfterInit = $("#child_name").val();
+
+                                $("#tree").remove();
+                                $(".tree_container").append("<ul id='tree'></ul>")
                                 initTree();
                                 $("#child_name").attr("value", "");
                                 $("#child_name").parent().hide();
@@ -147,6 +151,36 @@
                         },
                         "json"
                     )
+                });
+
+                $("#delete_btn").click(function(){
+                    var id = $("#selected_item").val();
+                    if(id == undefined){
+                        alert("Не выбран узел !");
+                    }
+                    else if($("#tree li[id="+id+"]").parents("ul").length == 1){
+                        alert("Невозможно удалить корневой узел !");
+                    }
+                    else{
+                        $.post(
+                            "/rest/item/"+id+"/delete",
+                            {},
+                            function(response){
+                                if(response.status){
+                                    alert("Узел успешно удален");
+                                    $("li[id="+id+"]").remove();
+                                    $("#info").hide();
+                                }
+                                else alert(response.message);
+                            },
+                            "json"
+                        )
+
+
+                    }
+
+
+
                 })
 
             })
@@ -161,7 +195,7 @@
 <br /><br />
 <table id="main">
     <tr>
-        <td style="vertical-align: top">
+        <td style="vertical-align: top" class="tree_container">
             <div>
                 Поиск по дереву: <input type="text" id="searchtext" /> <button id="search">Поиск</button>
             </div>
