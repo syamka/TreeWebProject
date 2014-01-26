@@ -12,8 +12,14 @@ import javax.servlet.*;
 import java.io.IOException;
 
 /**
- * <h3></h3>
- * <p></p>
+ * <h3>Фильтр для того, чтобы hibernate работал с local транзакциями и lazy-загрузкой</h3>
+ * <p>
+ *     Фактически реализация паттерна Open Session In View:
+ *     EntitityManagerUtil отвечает за то, что в каждом потоке есть свой EntityManager;
+ *     При каждом новом запросе происходит создание EntityManager, старт транзакции; после завершения обработки запроса
+ *     транзакция коммитится, и EntityManager закрывается.
+ *
+ * </p>
  * <p>Author: predtechenskaya (predtechenskaya@i-teco.ru)</p>
  * <p>Date: 21.01.14</p>
  */
@@ -29,7 +35,7 @@ public class PersistenceFilter implements Filter {
             filterChain.doFilter(request, servletResponse);
             EntityManagerUtil.getEm().getTransaction().commit();
         }
-        catch (RuntimeException e) {
+        catch (Throwable e) {
             if ( EntityManagerUtil.getEm() != null && EntityManagerUtil.getEm().isOpen())
                 EntityManagerUtil.getEm().getTransaction().rollback();
             throw e;

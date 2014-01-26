@@ -7,6 +7,8 @@
     <groupId>TreeWebProject</groupId>
     <artifactId>TreeWebProject</artifactId>
     <version>1.0</version>
+    <packaging>war</packaging>
+    <name>Tree Web Project</name>
 
     <dependencies>
         <dependency>
@@ -73,10 +75,24 @@
             <artifactId>jackson-xc</artifactId>
             <version>1.9.13</version>
         </dependency>
-
-
-
     </dependencies>
+
+    <build>
+        <finalName>TreeWebApp</finalName>
+
+        <!-- Здесь определяем версию JDK, которую использует maven-->
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
 
     
 </project>

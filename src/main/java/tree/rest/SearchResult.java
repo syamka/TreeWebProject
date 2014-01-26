@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Title:
- * Description:
+ * Title: Объект результата поискового запроса
+ * Description:Содержит список ID результатов + список узлов, которые должны быть развернуты
  * <p/>
  * User: valentina
  * Date: 22.01.14

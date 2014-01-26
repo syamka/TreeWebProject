@@ -3,8 +3,9 @@ package tree.rest;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Title:
- * Description:
+ * Title: Результат операции
+ * Description: Содержит статус операции и, если были ошибки, сообщение.
+ *
  * <p/>
  * User: valentina
  * Date: 21.01.14

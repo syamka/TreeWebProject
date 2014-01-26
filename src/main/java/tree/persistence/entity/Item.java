@@ -16,13 +16,15 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * <h3></h3>
+ * <h3>Entity объекта - текстового узла</h3>
  * <p></p>
  * <p>Author: predtechenskaya (predtechenskaya@i-teco.ru)</p>
  * <p>Date: 21.01.14</p>
  */
 @NamedQueries({
+    //Запрос на корневой узел
     @NamedQuery(name="Item.root", query = "SELECT i FROM item i WHERE i.parent=0"),
+    //Запрос на поиск узлов
     @NamedQuery(name="Item.search", query = "SELECT i FROM item i WHERE i.text LIKE :searchtext")
 })
 

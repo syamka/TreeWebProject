@@ -24,6 +24,7 @@
        	<script src="./js/jquery.treeview.async.js" type="text/javascript"></script>
         <script type="text/javascript">
 
+            //Если мы перестроили дерево и хотим подсветить узлы, то передаем текст искомого узла через эту переменную
             var searchAfterInit = "";
 
             /**
@@ -78,6 +79,9 @@
                     }
             }
 
+            /**
+            *   Поиск: записываем искомое в глобальные переменные и запускаем обработку
+             */
             function search(text){
                 $("#tree li").removeClass("green");
                 $.get("/rest/item/search",
@@ -127,6 +131,9 @@
                     $("#child_name").parent().toggle();
                 });
 
+                /**
+                *   Добавление узла
+                 */
                 $("#save_child_btn").click(function(){
                     if($("#child_name").val() == ""){
                         alert("Введите текст дочернего узла !");
@@ -153,6 +160,9 @@
                     )
                 });
 
+                /**
+                *   Удаление узла
+                 */
                 $("#delete_btn").click(function(){
                     var id = $("#selected_item").val();
                     if(id == undefined){
@@ -175,12 +185,7 @@
                             },
                             "json"
                         )
-
-
                     }
-
-
-
                 })
 
             })
@@ -211,17 +216,10 @@
                     <br />
                     Текст дочернего узла: <input type="text" id="child_name" />
                     <button id="save_child_btn">Сохранить</button>
-
                 </div>
-
             </div>
         </td>
-
     </tr>
 </table>
-
-
-
-
 </body>
 </html>

@@ -15,8 +15,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigInteger;
 
 /**
- * <h3></h3>
- * <p></p>
+ * <h3>JAXB - "Обертка" для текстового узла</h3>
+ * <p>
+ *     Соответствует формату объектов, который ждет на клиенте плагин treeview
+ * </p>
  * <p>Author: predtechenskaya (predtechenskaya@i-teco.ru)</p>
  * <p>Date: 21.01.14</p>
  */
